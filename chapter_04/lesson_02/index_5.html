@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>transition 动画和过渡同时进行时控制执行时间</title>
+    <style>
+        @keyframes shake {
+            0% {
+                transform: translateX(-100px);
+            }
+            33% {
+                transform: translateX(0px);
+            }
+            66% {
+                transform: translateX(100px);
+            }
+            100% {
+                transform: translateX(0px);
+            }
+        }
+        /* 1. 默认以'v'开头 v-xxx-xxx */
+        .v-enter-from {
+            color: red;
+        }
+        .v-enter-active {
+            animation: shake 10s ;
+            transition: color  3s ease-in;
+        }
+
+        .v-leave-active {
+            animation: shake 10s;
+            transition: all 3s ease-out;
+        }
+        .v-leave-to {
+            color: red;
+        }
+
+
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // 动画
+    app = Vue.createApp({
+        data(){
+            return {
+                show: true
+            }
+        },
+        methods: {
+            handleClick(){
+                this.show = !this.show
+            }
+        },
+        // transition 动画和过渡同时进行时控制执行时间
+        // 1. type 属性 指定以谁的时间为准  <transition type="transition">
+        // 2. duration 属性 指定动画的时间 <transition duration="1000">
+        // 3. duration 属性 指定动画 入场、出场时间  <transition :duration="{enter:1000, leave: 3000}">
+        // 4. css 属性 可声明是否使用 css 动画 <transition :css="false">
+        template: `
+    <!--            <transition type="animation">-->
+    <!--            <transition duration="1000">-->
+    <!--            <transition :duration="{enter:1000, leave: 3000}">-->
+            <transition :css="false">
+              <div v-show="show">Hello World</div>
+            </transition>
+            <button @click="handleClick" >切换</button>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

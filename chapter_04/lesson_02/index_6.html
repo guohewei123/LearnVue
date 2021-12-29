@@ -1,0 +1,65 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>使用 js 实现动画效果</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // 动画
+    app = Vue.createApp({
+        data(){
+            return {
+                show: true
+            }
+        },
+        methods: {
+            handleClick(){
+                this.show = !this.show
+            },
+            handleBeforeEnter(el){
+                el.style.color = "red"
+            },
+            handleEnter(el, done){
+                const animation = setInterval(() => {
+                    const color = el.style.color;
+                    if (color === "red") {
+                        el.style.color = "blue";
+                    } else {
+                        el.style.color = "red";
+                    }
+                }, 1000)
+                setTimeout(()=>{
+                    clearInterval(animation);
+                    done();
+                }, 3000)
+            },
+            handleAfterEnter(el){
+                el.style.color = "black";
+                alert(123);
+            }
+        },
+        template: `
+            <transition
+              :css="false"
+              @before-enter="handleBeforeEnter"
+              @enter="handleEnter"
+              @after-enter="handleAfterEnter"
+            >
+              <div v-show="show">Hello World</div>
+            </transition>
+            <button @click="handleClick" >切换</button>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

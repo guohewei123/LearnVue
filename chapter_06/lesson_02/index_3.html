@@ -1,0 +1,49 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>toRef 的使用</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+        // 1. ref, reactive 原理：通过 proxy 对数据进行封装，当数据变化时触发模板等内容更新
+        // 2. ref 处理基础类型数据：String Number 等
+        // let name = ref("dell")  proxy 将 "dell" 变成 proxy({value: "dell"}) 这样的响应式引用
+        // 3. reactive 处理非基础类型数据 如 array object 等
+        // let  nameObj= reactive({name: "dell"}) proxy 将 "{name: "dell"}" 变成 proxy({name: "dell"}) 这样的响应式引用
+
+        // 4. readonly 可限制响应式引用, 修饰后不可以响式修改
+        // 5. toRefs 可已将  proxy({name: "dell"}) 转换成 {name: proxy({value: "dell"})]
+        // 6. toRef 的功能与 toRefs 类似，区别是当 const {age} = toRef(nameObj, "age") 当 nameObj 中不存在age属性时不会报错，或给默认的 undefined
+
+        template: `
+            <div>{{age}}</div>
+        `,
+        setup(props, context){
+
+            // toRef 的使用
+            const {reactive, toRefs, toRef} = Vue;
+            const nameObj= reactive({name: "dell"});
+            const {age} = toRef(nameObj, "age");
+            setTimeout(() => {
+                nameObj.name = "lee";
+                age.value = 18
+            }, 2000);
+
+            return {
+                age: age
+            }
+        }
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

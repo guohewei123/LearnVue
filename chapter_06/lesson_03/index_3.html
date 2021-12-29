@@ -1,0 +1,67 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>使用 Composition API 开发 TodoList</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+
+    const listRelativeEffect = () => {
+        const {reactive} = Vue;
+        const showList = reactive([]);
+        const addClick = (item) => {
+            showList.push(item);
+        }
+        return {
+            addClick,
+            showList
+        }
+    }
+
+    const inputValueEffect = () => {
+        const {ref} = Vue;
+        const inputVal = ref("123");
+        const handleInputValueChange = (e) => {
+            inputVal.value = e.target.value;
+        }
+        return {
+            inputVal,
+            handleInputValueChange
+        }
+    }
+
+
+    app = Vue.createApp({
+        template: `
+            <div>
+              <input :value="inputVal" @input="handleInputValueChange"/>
+              <button @click="() => addClick(inputVal)">增加</button>
+              <ul>
+                  <li v-for="(item, index) in showList" :key="index">{{item}}</li>
+              </ul>
+            </div>
+        `,
+        setup(props, context){
+
+            const {addClick, showList} = listRelativeEffect();
+            const {inputVal, handleInputValueChange} = inputValueEffect();
+            return {
+                inputVal,
+                addClick,
+                showList,
+                handleInputValueChange
+            }
+        },
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

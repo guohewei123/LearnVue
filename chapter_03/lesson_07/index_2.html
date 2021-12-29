@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>使用插槽 slot</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. slot 插槽
+    // 2. 父模板里调用的数据属性，使用的都是父模板里的数据
+    // 3. 子模板里调用的数据属性，使用的都是子模板里的数据
+    // 4. slot 设置默认值 <slot> <button>默认提交</button></slot>
+    // 5. 具名插槽, 通过给插槽定义名字，使用的时候可以指定要使用插槽名称，具名插槽 需要外层包 <template v-slot:header> </template>
+    // 6. 具名插槽 "v-slot:header" 可简写成 "#header"
+    Test = {
+        template: `
+          <div>
+            <slot name="header"></slot>
+            <div>content</div>
+            <slot name="footer"></slot>
+          </div>
+        `
+    }
+    app = Vue.createApp({
+        components: {test: Test},
+        template: `
+          <div>
+            <test>
+<!--                <template v-slot:header>-->
+                <template #header>
+                    <div>header</div>
+                </template>
+                <template v-slot:footer>
+                    <div>footer</div>
+                </template>
+            </test>
+
+          </div>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+
+    vm.$data.message = "Hello"
+</script>
+</html>

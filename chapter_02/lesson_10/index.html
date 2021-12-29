@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 双向绑定 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. input 框双向绑定
+    // <input v-model="message"/>
+
+    // 2. textarea 框双向绑定
+    // <textarea v-model="message"/>
+
+    // 3. checkbox 框双向绑定
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: []
+            }
+        },
+        template: `
+
+        <div>
+          {{message}} <br>
+          jack <input type="checkbox" v-model="message" value="jack" \> <br>
+          rose <input type="checkbox" v-model="message" value="rose" \> <br>
+          tudou <input type="checkbox" v-model="message" value="tudou" \> <br>
+        </div>
+        `
+    })*/
+    // 使用 false-value="hello" true-value="world"
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: "hello"
+            }
+        },
+        template: `
+        {{message}}
+        <div>
+          <input type="checkbox" v-model="message" false-value="hello" true-value="world"\>
+        </div>
+        `
+    })*/
+
+    // 4. radio 框双向绑定
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: ""
+            }
+        },
+        template: `
+
+        <div>
+          {{message}} <br>
+          jack <input type="radio" v-model="message" value="jack" \> <br>
+          rose <input type="radio" v-model="message" value="rose" \> <br>
+          tudou <input type="radio" v-model="message" value="tudou" \> <br>
+        </div>
+        `
+    })*/
+
+    // 5. select 框双向绑定
+    // 5.1 单选
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: ""
+                }
+        },
+        template: `
+
+        <div>
+          {{message}} <br>
+          <select v-model="message">
+            <option disabled value="">请选择</option>
+            <option value="AA">A</option>
+            <option value="BB">B</option>
+            <option value="CC">C</option>
+          </select>
+        </div>
+        `
+    })*/
+
+    // 5.2 多选
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: ""
+            }
+        },
+        template: `
+
+        <div>
+          {{message}} <br>
+          <select v-model="message" multiple>
+            <option value="AA">A</option>
+            <option value="BB">B</option>
+            <option value="CC">C</option>
+          </select>
+        </div>
+        `
+    })*/
+    // ------------------- 优化后--------------------------
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: "",
+                options: [
+                    {text: "A", value: "AAAAA"},
+                    {text: "B", value: "BBBBB"},
+                    {text: "C", value: "CCCCC"},
+                ]
+            }
+        },
+        template: `
+
+        <div>
+          {{message}} <br>
+          <select v-model="message" multiple>
+            <option v-for="item in options" :value="item.value">{{item.text}}</option>
+          </select>
+        </div>
+        `
+    })*/
+
+    // 6. v-model 修饰符
+    // lazy 输入完成后双向绑定触发  <input v-model.lazy="message">
+    // number 输入数据转换成数字绑定  <input v-model.number="message" type="number" >
+    // trim 去除输入前后空格进行绑定  <input v-model.trim="message" >
+    app = Vue.createApp({
+        data() {
+            return {
+                message: "123"
+            }
+        },
+        template: `
+        {{message}}
+        <div>
+          <input v-model.trim="message" \>
+        </div>
+        `
+    })
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

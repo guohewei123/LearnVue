@@ -1,0 +1,67 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>watch 和 watchEffect 对比</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+
+        // watch 和 watchEffect 对比
+        setup(props, context){
+            const {reactive, watch, toRefs, watchEffect} = Vue;
+            const nameObj = reactive({name: "张三", age: 18});
+
+            // 1. watch 的使用
+            // const stop = watch([() => nameObj.name, () => nameObj.age], ([curName, curAge], [prevName, prevAge]) => {
+            //     console.log(curName, prevName, "--------" , curAge, prevAge)
+            //     setTimeout(() => {
+            //         stop();        // 取消侦听
+            //     }, 3000)
+            // }, {immediate: true})  // {immediate: true} 将 watch 改成立即执行方式
+
+            // 2. watchEffect
+
+            const stop = watchEffect(() => {
+                console.log(nameObj.name);
+                console.log(nameObj.age);
+                setTimeout(() => {
+                    stop()            // 取消侦听
+                }, 5000)
+            })
+
+            const {name, age} = toRefs(nameObj)
+            return {
+                name,
+                age
+            }
+        },
+        template: `
+            <div>
+              <input v-model="name"/>
+            </div>
+            <div>
+              <h1>{{name}}</h1>
+            </div>
+
+            <div>
+            <input v-model="age"/>
+            </div>
+            <div>
+            <h1>{{age}}</h1>
+            </div>
+
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

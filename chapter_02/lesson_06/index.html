@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 样式 </title>
+    <style>
+         .red {
+             color: red;
+         }
+         .green {
+             color: green;
+         }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    app = Vue.createApp({
+        data() {
+            return {
+                classString: "green",
+                classObject: {red: true, green: false},
+                // classArray: ["green", "red", {brown: true}],
+                classArray: ["red", "green"],
+                styleString: "color: yellow",  // 行内样式 原生语法
+                styleObject: {                 // 行内样式 Vue语法
+                    "color": "orange"
+                }
+            }
+        },
+        // template: `<div class="green">Hello World</div>`
+        // template: `<div :class="classString">Hello World</div>`   // vm.classString = "red"
+        // template: `<div :class="classObject">Hello World</div>`   // vm.classObject.green = false
+        // template: `<div :class="classArray">Hello World</div>`       // vm.classArray = ["red"]
+        template: `
+          <div :style="styleString"> styleString </div>
+          <div :style="styleObject"> styleObject </div>
+          <div :class="classArray">
+            Hello World
+          <demo :class="classString"
+            :subClassObject="classObject"
+          />
+          </div>`
+    });
+
+    // :class="$attrs.class" 表示使用父组件的class属性
+    app.component("demo", {
+        props: ["subClassObject"],
+        template: `
+          <div :class="$attrs.class">one</div>
+          <div :class="subClassObject">two</div>
+        `
+    })
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

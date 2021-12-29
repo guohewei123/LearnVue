@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件间如何通过事件进行通信</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. 子组件 生成自定义事件 "addOne"，父组件监听 "@add-one" 事件，并修改count值，实现counter
+    // 2. 子组件 生成的自定义事件 "Add" 时，可以为其传入参数
+    // 3. 子组件 可以声明自定义的事件名称 emits: ["add"]
+    // 4. 子组件 可以声明自定义的事件名称, 同时也可以对其入参进行验证
+    // 5. 高级实现：父组件通过 v-model="count" 双向绑定，子组件接收固定参数 "modelValue", 触发 "update:modelValue" 事件返回 新的值绑定到 count
+    // 6. "modelValue" 是固定值，也可以自定义，通过 v-model:countValue="count" 这样就实现了自定义为 "countValue"
+    // 7. 自定义修饰符 uppercase ... , 子组件通过 modelModifiers 接收修饰符
+    Test = {
+        props: {
+            modelValue: String,
+            modelModifiers: {
+                default: ()=> ({})   // 如果没有传入修饰符时，modelModifiers 会使用默认值 空对象{}
+            }
+        },
+
+        methods: {
+            handleClick() {
+                let newValue = this.modelValue + "b"
+                if (this.modelModifiers.uppercase) {   // 判断 this.modelModifiers.uppercase == true
+                    newValue = newValue.toUpperCase()
+                }
+                this.$emit("update:modelValue", newValue)
+            }
+        },
+        template: `
+          <div @click="handleClick">{{ modelValue }}</div>`
+    }
+    app = Vue.createApp({
+        components: {test: Test},
+        data() {
+            return {
+                count: "a"
+            }
+        },
+        template: `
+          <div>
+          <test v-model.uppercase="count"/>
+          </div>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+
+    vm.$data.message = "Hello"
+</script>
+</html>

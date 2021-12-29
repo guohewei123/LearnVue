@@ -1,0 +1,75 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>context 参数</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+        // context 参数
+        // const {attrs, slots, emit} = context;
+        // attrs 中放置 None-Props属性
+        // slots 中放置相关插槽的虚拟 DOM
+        // emit 实现自定义事件
+
+        methods: {
+            handleClick(){
+                alert("change")
+            }
+        },
+        template: `
+            <child name="Zhang Shan">Parent</child>
+            <child-context @change="handleClick" >Parent</child-context>
+        `
+    });
+
+    // 测试 context.attrs 和 context.slots
+    app.component("child", {
+
+        mounted(){
+            // console.log(this.$slots);  // 使用组件的 this 获取插槽
+        },
+
+        setup(props, context){
+            const {h} = Vue;
+            const {attrs, slots, emit} = context;
+            // 1. 测试 attrs
+            console.log(attrs.name);  // None-Props属性
+
+            // 2. 测试 slots
+            console.log(slots)  // 获取slots 与  this.$slots 一样样的
+            // return () => {return h("div", {}, ["123123"])}
+            return () => h("div", {}, slots.default())
+
+        }
+    })
+
+    // 测试 context.emit 向外触发事件 效果和 this.$emit("change") 一样
+    app.component("child-context", {
+
+        mounted(){
+            // this.$emit("change")       // 使用组件的 emit 触发自定义事件
+        },
+
+        template: `<button @click="handleClick">Hello</button>`,
+
+        setup(props, context){
+            const {h} = Vue;
+            const {attrs, slots, emit} = context;
+            // 1. 测试 attrs
+            function handleClick() {emit("change");}
+            return {handleClick}
+        }
+    })
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

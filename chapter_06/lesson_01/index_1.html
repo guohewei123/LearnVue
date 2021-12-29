@@ -1,0 +1,45 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>setup 函数使用</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+        methods: {
+            test(){
+                console.log(this.$options.setup())
+            },
+        },
+        mounted(){
+            this.test()
+        },
+        // 1. setup 函数在created 实例被完全初始化之前调用
+        // 2. setup 函数返回的值可以被内部函数使用
+        // 3. setup 内部不能使用 this.
+
+        setup(props, context){
+            console.log(props, context)
+            return {
+                "name": "dell",
+                handleClick: () => {
+                    alert(123)
+                }
+            }
+        },
+        template: `
+            <div>{{name}}</div>
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

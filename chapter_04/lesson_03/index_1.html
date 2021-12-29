@@ -1,0 +1,56 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>transition-group 列表动画</title>
+    <style>
+        .list-item {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .v-enter-from{
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .v-enter-active {
+            transition: all 1s ease-in;
+        }
+        .v-enter-to{
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .v-move{
+            transition: all .5s ease-in;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+        data(){ return { list: [1, 2, 3] }},
+        methods: {
+            handleClick(){
+                this.list.unshift(this.list.length + 1)
+            },
+        },
+        // transition-group 标签实现列表动画
+        // 1. v-move 可实现其他数据的移动动画
+        template: `
+            <transition-group>
+              <span class="list-item" v-for="item in list" :key="item">{{item}}</span>
+            </transition-group>
+            <button @click="handleClick" >切换</button>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

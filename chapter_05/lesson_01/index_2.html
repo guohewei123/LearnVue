@@ -1,0 +1,41 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mixin 自定义属性</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // 1. 全局 mixin 和 局部 mixin
+    // 2. 组件 data, methods 优先级高于 mixin 中的 data, methods
+    // 3. 生命周期函数， 限制性 mixin 中的，后执行组件中的
+    // 4. 自定义属性，组件的自定义属性高于 mixin 中的自定义属性
+    // 5. 可以修改自定义属性的优先级: app.config.optionMergeStrategies.xxx_attr = (mixinValue, appValue) => {return mixinValue || appValue}
+    const myMixin = {
+        customAttr: "Mixin Hello World"
+    }
+
+    app = Vue.createApp({
+        customAttr: "Hello World",
+        mixins: [myMixin],
+        template: `
+            <div>{{this.$options.customAttr}}</div>
+        `
+    });
+
+    // 修改 自定义属性的优先级
+    app.config.optionMergeStrategies.customAttr = (mixinVal, appVal) => {
+        return mixinVal || appVal
+    }
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

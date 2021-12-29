@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>css 过渡（style 方式）</title>
+    <style>
+        .transition {
+            transition: 3s background-color ease;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // css 过渡（style 方式）
+    app = Vue.createApp({
+        data(){
+            return {
+                styleObj: {
+                    background: "blue",
+                }
+            }
+        },
+        methods: {
+            handleClick(){
+                if (this.styleObj.background === "blue") {
+                    this.styleObj.background = "green"
+                } else {
+                    this.styleObj.background = "blue"
+                }
+            }
+        },
+
+        template: `
+          <div class="transition" :style="styleObj">Hello World</div>
+          <button @click="handleClick" >切换</button>
+        `
+    });
+
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

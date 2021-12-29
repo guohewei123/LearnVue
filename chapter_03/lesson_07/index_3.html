@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>作用域插槽 slot</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. slot 作用域插槽 子组件可以将值传递给父组件，由父组件决定如何展示 v-slot="slotData" {{slotData.item}}
+    // 2. 通过对象解构简写：v-slot="slotData" {{slotData.item}} 可简写 v-slot="{item}" {{item}}
+    Test = {
+        data() {
+            return {list: [1, 2, 3]}
+        },
+        template: `
+          <div>
+            <slot v-for="item in list" :item="item"></slot>
+          </div>
+        `
+    }
+    app = Vue.createApp({
+        components: {test: Test},
+        template: `
+          <div>
+<!--            <test v-slot="slotData">-->
+<!--                <div>{{slotData.item}}</div>-->
+            <test v-slot="{item}">
+              <div>{{item}}</div>
+            </test>
+
+          </div>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+
+    vm.$data.message = "Hello"
+</script>
+</html>

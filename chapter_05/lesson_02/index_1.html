@@ -1,0 +1,88 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义指令 directive </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+
+    // 1. 不使用自定义指令实现输入框的聚焦
+    /*app = Vue.createApp({
+        mounted() {
+            console.log("mounted")
+            this.$refs.topInput.focus()
+        },
+        template: `
+            <input ref="topInput"/>
+        `
+    });*/
+
+    // 局部自定义指令
+    const myFocus = {
+        beforeMount(el){
+            console.log("beforeMount")
+        },
+        mounted(el) {
+            console.log("mounted")
+            el.focus()
+        },
+        beforeUpdate() {
+            console.log("beforeUpdate")
+        },
+        updated(){
+            console.log("updated")
+        },
+        beforeUnmount() {
+            console.log("beforeUnmount")
+        },
+        unmounted() {
+            console.log("unmounted")
+        }
+
+    }
+
+    app = Vue.createApp({
+        data(){
+            return {
+                show: true
+            }
+        },
+        directives: {
+            "my-focus": myFocus
+        },
+        // console 输入： vm.show =false 会触发 beforeUpdate 和 updated
+        /*template: `
+            <div v-show="show">
+              <input v-my-focus />
+            </div>
+
+        `*/
+
+        // console 输入： vm.show =false 会触发 beforeUnmount 和 unmounted
+        template: `
+            <div v-if="show">
+              <input v-my-focus />
+            </div>
+
+        `
+    })
+
+    // 全局 自定义指令
+    /*app.directive("myFocus", {
+        mounted(el){
+            el.focus()
+        }
+    })*/
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义指令 directive </title>
+    <style>
+        .posclass {
+            position: absolute;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // 1. directive 的传参 v-xxx:arg_xxx="value_xxx", 可通过第二个参数binding获取： binding.arg 就是 arg_xxx, binding.value 就是 value_xxx
+    // 2. 简写 directive 中的 mounted 和 updated 生命周期函数
+    app = Vue.createApp({
+        data(){
+            return {
+                distance: 100
+            }
+        },
+        template: `
+            <div v-pos:left="distance" class="posclass" >
+              <input />
+            </div>
+
+        `
+    })
+
+    // 全局 自定义指令
+    /*app.directive("pos", {
+        mounted(el, banding){
+            el.style[banding.arg] = (banding.value + "px")
+        },
+        updated(el, banding){
+            el.style[banding.arg] = (banding.value + "px")
+        }
+    })*/
+    // 简写后的全局指令
+    app.directive("pos", (el, banding) => {
+        el.style[banding.arg] = (banding.value + "px")
+    })
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

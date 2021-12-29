@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>生命周期函数</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. v-html 示例
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: "<strong>hello world</strong>"
+            }
+        },
+        template: `<div v-html="message"></div>`
+    });
+    */
+
+    // 2. v-bind ("v-bind:" 可简写 ":")
+    // - 将属性值与变量绑定
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: "hello world"
+            }
+        },
+        template: `<div v-bind:title="message">Test</div>`
+    });*/
+
+    /*app = Vue.createApp({
+        data() {
+            return {
+                disable: false  // true of false
+            }
+        },
+        template: `<input v-bind:disabled="disabled"/>`
+    });*/
+
+    // 3. v-once 变量只使用一次
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: "hello world"
+            }
+        },
+        template: `<div v-once>{{message}}</div>`
+    });*/
+
+    // 4. v-if 值为true 展示，值为false 不展示
+    /*app = Vue.createApp({
+        data() {
+            return {
+                show: false  // true of false
+            }
+        },
+        template: `<div v-if="show">Hello</div>`
+    });*/
+
+    // 5. v-on 帮定时间
+    /*app = Vue.createApp({
+        data() {
+            return {
+                message: "hello world",
+                event: "mouseenter",
+                divAttr: "title1"
+            }
+        },
+        methods: {
+            handleClick(){
+                alert("click")
+            }
+        },
+        // template: `<div v-on:click="handleClick">Hello</div>`
+        // template: `<div @click="handleClick">Hello</div>`  // "v-on:" 简写 "@"
+        template: `<div @[event]="handleClick" :[divAttr]="message">Hello</div>`   // 动态属性  "v-bind:" 可简写 ":"
+    });*/
+
+    // 6. 阻止默认行为 e.preventDefault() 和 @click.prevent
+    app = Vue.createApp({
+        methods: {
+            handleClick(e){
+                e.preventDefault()
+            },
+            handleClick1(){
+            }
+        },
+        // 方法一：通过 e.preventDefault() 实现阻止默认行为
+        /*template: `
+          <div>
+            <form action="https://www.baidu.com" @click="handleClick">
+              <button type="submit">提交</button>
+            </form>
+          </div>
+        `,*/
+        // 方法一：通过 @click.prevent="handleClick1" 实现阻止默认行为
+        template: `
+          <div>
+<!--            <form action="https://www.baidu.com">-->
+            <form action="https://www.baidu.com" @click.prevent="handleClick1">
+              <button type="submit">提交</button>
+            </form>
+          </div>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

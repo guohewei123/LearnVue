@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 条件渲染 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    app = Vue.createApp({
+        data() {
+            return {
+                show: false,
+                conditionOne: false,
+                conditionTwo: false
+                }
+        },
+        // v-if="show" 和 v-show="show" 的区别
+        // 1. v-if="show" 会移除dom，到达不渲染效果
+        // 2. v-show="show" 通过 style="display: none;"，到达不渲染效果
+        template: `
+
+        <div v-if="conditionOne">if</div>
+        <div v-else-if="conditionTwo">elif</div>
+        <div v-else>else</div>
+
+
+        <div v-if="show">Hello World</div>
+        <div v-show="show">Bey World</div>
+        `
+    })
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

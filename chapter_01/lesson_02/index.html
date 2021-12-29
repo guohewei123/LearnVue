@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>字符串反转和内容隐藏</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+<div id="root1"></div>
+
+</body>
+
+<script>
+
+    // 字符串反转示例
+    Vue.createApp({
+        data() {
+            return {
+                content: "hello world"
+            }
+        },
+        methods: {
+            handleButtonClick() {
+                this.content = this.content.split("").reverse().join("")
+            }
+        },
+        template:
+          `
+            <div>
+            <span>{{ content }}</span>
+            <span> <button v-on:click="handleButtonClick"> 反转</button></span>
+            </div>`
+    }).mount("#root");
+
+    // 字符串 隐藏/显示
+    /*Vue.createApp({
+        data() {
+            return {
+                content: "hello world",
+                show: true
+            }
+        },
+        methods: {
+            handleButtonClick() {
+                this.show = !this.show
+            }
+        },
+        template:
+          `
+            <div>
+            <span v-if="show">{{ content }}</span>
+            <span> <button v-on:click="handleButtonClick"> 显示/隐藏</button></span>
+            </div>
+          `
+    }).mount("#root");*/
+
+</script>
+</html>

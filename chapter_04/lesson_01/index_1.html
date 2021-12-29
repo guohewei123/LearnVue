@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>css 动画和过渡</title>
+    <style>
+        @keyframes leftToRight {
+            0% {
+                transform: translateX(-100px);
+            }
+            50% {
+                transform: translateX(-50px);
+            }
+            0% {
+                transform: translateX(0px);
+            }
+        }
+        .animation {
+            animation: leftToRight 3s;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // 动画
+    app = Vue.createApp({
+        data(){
+            return {
+                animate: {
+                    animation: true
+                }
+            }
+        },
+        methods: {
+            handleClick(){
+                this.animate.animation = !this.animate.animation
+            }
+        },
+
+        template: `
+          <div :class="animate">Hello World</div>
+          <button @click="handleClick" >切换</button>
+        `
+    });
+
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

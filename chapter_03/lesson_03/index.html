@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件间传值和传值校验</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. 普通传参：   props: ["subContent"]
+    // 2. 校验参数类型：props: {"subContent": String}
+    // type: String, Number, Boolean, Array, Object, Function, Symbol
+    // 3. 其他校验：required 必填， default 默认值, validator 自定义验证返回Boolean
+    Test = {
+        // props: ["subContent"],
+        props: {
+            "subContent": {
+                type: Number,
+                required: true,
+                default: 222,
+                validator: function (value) {
+                    return value < 100
+                }
+            }
+        },
+        template: `
+          <div>{{ subContent }}</div>
+        `
+    }
+
+    app = Vue.createApp({
+        data() {
+            return {
+                content: 123
+            }
+        },
+        components: {
+            test: Test,
+        },
+        template: `
+          <div>
+          <test :subContent="content"/>
+<!--          <test />-->
+          </div>
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+
+    vm.$data.message = "Hello"
+</script>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>单向数据流的理解</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 单向数据流的概念：子组件可以使用父组件传递过来的值，但是不能修改传递过来的值（子组件可以通过，重新定义变量，实现修改）
+    Test = {
+        props: ["num"],
+        data() {
+            return {
+                localNum: this.num
+            }
+        },
+        template: `
+<!--          <div @click="num += 1">{{num}}</div>-->
+          <div @click="localNum += 1">{{localNum}}</div>
+        `
+    }
+    app = Vue.createApp({
+        data() {
+            return {
+                num: 1
+            }
+        },
+        components: {test: Test},
+        template: `
+          <div>
+          <test :num="num"/>
+          </div>
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+
+    vm.$data.message = "Hello"
+</script>
+</html>

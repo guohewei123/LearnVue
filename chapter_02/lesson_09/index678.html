@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 事件绑定 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    app = Vue.createApp({
+        methods: {
+            // 6. 按键修饰符：enter, tab, delete, esc, up, down, left, right
+            /*clickHandle(event) {
+                console.log("keydown: ", event.keyCode)
+            },*/
+            // <input @keydown.enter="clickHandle"/>
+
+            // 7. 鼠标修饰符：left, right, middle
+            /*clickHandle(event) {
+                console.log("click right")
+            },*/
+            //  <div  @click.right="clickHandle">鼠标修饰符测试</div>
+
+            // 8. 精确修饰符：exact
+            clickHandle() {
+                console.log("left + click")
+            }
+            // <div  @click.left.exact="clickHandle">left+鼠标</div>
+        },
+        template: `
+          <div >
+          <div  @click.left.exact="clickHandle">left+鼠标</div>
+          </div>
+
+        `
+    })
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

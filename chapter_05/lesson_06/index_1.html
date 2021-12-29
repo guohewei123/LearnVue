@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title> 对数据做校验的插件 </title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+<div id="hello"></div>
+
+</body>
+<script>
+    // 对数据做校验的插件
+    app = Vue.createApp({
+        data() {
+            return {name: "dell", age: 23}
+        },
+        rules: {
+            age: {
+                validate: (age) => {
+                    return age > 25
+                },
+                message: "too young, to simple"
+            },
+            name: {
+                validate: (name) => {
+                    return name.length >= 4
+                },
+                message: "name to short"
+            }
+        },
+        template: `
+          <div>name:{{ name }}, age:{{ age }}</div>
+        `
+    });
+
+    // 使用 mixin 实现
+    /*app.mixin({
+        mounted(){
+            for (let key in this.$options.rules) {
+                console.log(key)
+                const item = this.$options.rules[key]
+                this.$watch(key, (value) => {
+                    const result = item.validate(value)
+                    if (!result) {
+                        console.log(item.message)
+                    }
+                })
+            }
+        }
+    })*/
+
+    // 插件 plugin 实现， 书写方式一
+    /*const validatorPlugin = {
+        install(app, options) {
+            app.mixin({
+                mounted() {
+                    for (let key in this.$options.rules) {
+                        console.log(key)
+                        const item = this.$options.rules[key]
+                        this.$watch(key, (value) => {
+                            const result = item.validate(value)
+                            console.log(key, value, result)
+                            if (!result) {
+                                console.log(item.message)
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    }*/
+
+    // 插件书写方式一
+    const validatorPlugin = (app, options) => {
+        app.mixin({
+            mounted() {
+                for (let key in this.$options.rules) {
+                    console.log(key)
+                    const item = this.$options.rules[key]
+                    this.$watch(key, (value) => {
+                        const result = item.validate(value)
+                        console.log(key, value, result)
+                        if (!result) {
+                            console.log(item.message)
+                        }
+                    })
+                }
+            }
+        })
+    }
+
+    app.use(validatorPlugin)
+
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

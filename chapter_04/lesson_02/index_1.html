@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>transition 标签实现单元素组件的过渡</title>
+    <style>
+        .v-enter-from {
+            opacity: 0;
+        }
+        .v-enter-active {
+            transition: opacity 1s ease-out;
+        }
+        .v-enter-to {
+            opacity: 1;
+        }
+        /*.v-leave-from {
+            opacity: 1;
+        }*/
+        .v-leave-active {
+            transition: opacity 0.5s ease-in;
+        }
+        .v-leave-to {
+            opacity: 0;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // 动画
+    app = Vue.createApp({
+        data(){
+            return {
+                show: true
+            }
+        },
+        methods: {
+            handleClick(){
+                this.show = !this.show
+            }
+        },
+
+        template: `
+            <transition>
+              <div v-show="show">Hello World</div>
+            </transition>
+            <button @click="handleClick" >切换</button>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

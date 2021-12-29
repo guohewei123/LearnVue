@@ -1,0 +1,65 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ref, reactive 响应式的引用1</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+        // 1. ref, reactive 原理：通过 proxy 对数据进行封装，当数据变化时触发模板等内容更新
+        // 2. ref 处理基础类型数据：String Number 等
+        // let name = ref("dell")  proxy 将 "dell" 变成 proxy({value: "dell"}) 这样的响应式引用
+        // 3. reactive 处理非基础类型数据 如 array object 等
+        // let  nameObj= reactive({name: "dell"}) proxy 将 "{name: "dell"}" 变成 proxy({name: "dell"}) 这样的响应式引用
+
+        template: `
+            <div>{{nameArray[0]}}</div>
+        `,
+
+        setup(props, context){
+
+            // 不使用 ref，reactive 时，数据2秒后不会更新为"lee"
+            /*let name = "dell"
+            setTimeout(() => {
+                name = "lee"
+            }, 2000);
+            return {name: name}*/
+
+            // 使用 ref 时，数据2秒后会更新为"lee"
+            /*const {ref} = Vue;
+            let name = ref("dell")
+            // proxy 将 "dell" 变成 proxy({value: "dell"}) 这样的响应式引用
+            setTimeout(() => {
+                name.value = "lee"
+            }, 2000);
+            return {name: name}*/
+
+            // 使用 reactive 时，数据2秒后会更新为"lee"
+            /*const {reactive} = Vue;
+            let  nameObj= reactive({name: "dell"})
+            // proxy 将 "{name: "dell"}" 变成 proxy({name: "dell"}) 这样的响应式引用
+            setTimeout(() => {
+                nameObj.name = "lee"
+            }, 2000);
+            return {nameObj: nameObj}*/
+            const {reactive} = Vue;
+            let  nameArray= reactive([123])
+            setTimeout(() => {
+                nameArray[0] = 456
+            }, 2000);
+            return {nameArray: nameArray}
+        }
+
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

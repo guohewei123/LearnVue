@@ -1,0 +1,50 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>transition 多个单元素标签之间切换</title>
+    <style>
+        .v-enter-from, .v-leave-to {
+            opacity: 0;
+        }
+        .v-enter-active, .v-leave-active {
+            transition: opacity 1s;
+        }
+        .v-enter-to, .v-leave-from {
+            opacity: 1;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+        data(){ return { show: true }},
+        methods: {
+            handleClick(){
+                this.show = !this.show
+            },
+        },
+        // transition 多个单元素标签之间切换
+        // 1. 默认 同时执行 enter 和 leave
+        // 2. 修改 transition mode 属性，修改动画效果  <transition mode="out-in">  先出后进， in-out 先进后出
+        // 3. 增加 transition appear， 可实现，在页面首次加载的时候增加动画效果
+        template: `
+            <transition mode="out-in" appear>
+              <div v-if="show">Hello World</div>
+              <div v-else="show">Bay World</div>
+            </transition>
+            <button @click="handleClick" >切换</button>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

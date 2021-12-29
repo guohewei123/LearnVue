@@ -1,0 +1,56 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Provide, Inject 的用法</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+
+        setup(props, context){
+            const {provide, ref, readonly} = Vue
+            let name = ref("default")
+            // provide("name", name)           // 1. 子组件可以通过 ".value" 直接修改父组件内容，不推荐
+            provide("name", readonly(name))    // 2. 通过 readonly 修饰传递的变量，这样子组件就不能修改name了
+            const modifyName = (value) => {
+                name.value = value
+            }
+            provide("modifyName", modifyName)
+        },
+        template: `
+          <child />
+        `
+    });
+
+    app.component("child", {
+        setup(props, context) {
+            const {inject} = Vue
+            const name = inject("name", "hello")
+            const modifyName = inject("modifyName")
+            const handleClick = () => {
+                // 1. 子组件可以通过 ".value" 直接修改父组件内容，不推荐，推荐使用父组件提供的方法修改
+                // 2. 父组件可以通过 readonly 修饰传递的变量，这样子组件就不能修改name了
+                name.value = "bbb"
+                // modifyName("aaa")  // 通过父组件的方法修改name
+            }
+            return{
+                name,
+                handleClick
+            }
+        },
+        template: `
+        <div @click="handleClick">{{name}}</div>
+        `
+    })
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

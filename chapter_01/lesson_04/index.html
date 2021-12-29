@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>组件初探 代码拆分</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    app = Vue.createApp({
+        data() {
+            return {
+                inputVal: "",
+                list: [],
+            }
+        },
+        methods: {
+            handleButtonClick() {
+                this.list.push(this.inputVal)
+                this.inputVal = ""
+            }
+        },
+        template: `
+          <div>
+            <input v-model="inputVal"/>
+            <button
+                v-on:click="handleButtonClick"
+                v-bind:title="inputVal"
+            > 增加
+            </button>
+            <ul>
+              <todo-item
+                  v-for="(item, index) of list"
+                  v-bind:content="item"
+                  v-bind:index="index"
+              />
+            </ul>
+          </div>
+        `
+    });
+
+    app.component("todo-item", {
+        props: ["content", "index"],
+        template: ' <li> {{index}}--{{content}}</li>'
+    });
+
+    app.mount("#root");
+
+</script>
+</html>

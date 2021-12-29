@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>transition 标签实现单元素组件的动画和过渡同时进行</title>
+    <style>
+        @keyframes shake {
+            0% {
+                transform: translateX(-100px);
+            }
+            33% {
+                transform: translateX(0px);
+            }
+            66% {
+                transform: translateX(100px);
+            }
+            100% {
+                transform: translateX(0px);
+            }
+        }
+        /* 1. 默认以'v'开头 v-xxx-xxx */
+        .v-enter-from {
+            color: red;
+        }
+        .v-enter-active {
+            animation: shake 3s ;
+            transition: color  3s ease-in;
+        }
+
+        .v-leave-active {
+            animation: shake 3s;
+            transition: all 3s ease-out;
+        }
+        .v-leave-to {
+            color: red;
+        }
+
+
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // 动画
+    app = Vue.createApp({
+        data(){
+            return {
+                show: true
+            }
+        },
+        methods: {
+            handleClick(){
+                this.show = !this.show
+            }
+        },
+
+        template: `
+            <transition>
+              <div v-show="show">Hello World</div>
+            </transition>
+            <button @click="handleClick" >切换</button>
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

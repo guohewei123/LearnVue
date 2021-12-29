@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Non-prop 属性</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. Non-prop 属性 是指子组件没有使用 props 接收的属性，通常可用于 样式的传递 style
+    // 2. 子组件获取指定Non-prop 属性 <div :msg1="$attrs.msg1">Hi</div>
+    // 3. 子组件获取所有Non-prop 属性 <div v-bind="$attrs">Hi</div>
+    // 4. 使用 "inheritAttrs: false" 默认将不继承Non-prop 属性
+    /*inheritAttrs: false,
+      template: `<div>Hi</div>`*/
+    // 5. 可以使用 "this.$attrs, this.$attrs.msg1" 来接收 Non-prop 属性
+    Test = {
+        // inheritAttrs: false,
+        data(){
+          return {
+              msg: this.$attrs.msg1,
+              allMsg: this.$attrs
+          }
+        },
+        template: `
+<!--          <div>Hi</div>-->
+          <div :msg1="$attrs.msg1">{{msg}}</div>
+          <div v-bind="$attrs">{{allMsg}}</div>
+          <div :msg2="$attrs.msg2">{{allMsg.msg2}}</div>
+        `
+    }
+    app = Vue.createApp({
+        components: {test: Test},
+        template: `
+          <div >
+          <test msg1="hello1" msg2="hello2" />
+          </div>
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+
+    vm.$data.message = "Hello"
+</script>
+</html>

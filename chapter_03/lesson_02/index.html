@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件的定义及复用性-局部组件</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 全局组件，只用定义了，处处可以使用，性能不高，但是使用起来简单，名字建议 小写字母单词，中间用中横线连接
+    // 局部组件，定义后需要注册之后才能使用，性能比较高，使用起来比较麻烦，名字建议，建议首字母大写，驼峰式命名
+    Counter = {
+        data() {
+            return {
+                count: 1
+            }
+        },
+        template: `
+        <div @click="count += 1"><h1>{{count}}</h1></div>
+        `
+    }
+    HelloWorld = {
+        template: `<div>Hello World</div>`
+    }
+    app = Vue.createApp({
+        components: {
+            // counter: Counter,
+            // "hello-world": HelloWorld
+            Counter, HelloWorld
+        },
+        template: `
+          <div>
+              <hello-world></hello-world>
+              <counter></counter>
+          </div>
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+
+    vm.$data.message = "Hello"
+</script>
+</html>

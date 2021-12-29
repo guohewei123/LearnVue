@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>生命周期函数</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. 生命周期函数：在某一时刻会自动执行的函数
+    app = Vue.createApp({
+        data() {
+            return {
+                message: "hello world"
+            }
+        },
+
+        // 1. 在实例生成之前执行的函数
+        beforeCreate () {
+            console.log("beforeCreate")
+        },
+
+        // 2. 在实例生成之后执行的函数
+        created () {
+            console.log("created")
+        },
+
+        // 3. 在组件内容被渲染到页面之前立即自动执行的函数
+        beforeMount() {
+            console.log(document.getElementById("root").innerHTML, "before mount")
+        },
+
+        // 4. 在组件内容被渲染到页面之后自动执行的函数
+        mounted(){
+            console.log(document.getElementById("root").innerHTML, "mounted")
+        },
+
+        // 5. 当data中的数据发生变化时时立即执行的函数
+        beforeUpdate() {
+            // vm.$data.message = "see you"
+            console.log(document.getElementById("root").innerHTML, "before update")
+        },
+
+        // 6. 当data中的数据变化后，页面完成渲染后会自动执行的函数
+        updated () {
+            console.log(document.getElementById("root").innerHTML, "updated")
+        },
+
+        // 7. 当 Vue 应用失效时，自动执行的函数
+        beforeUnmount() {
+            // app.unmount()
+            console.log(document.getElementById("root").innerHTML, "beforeUnmount")
+        },
+
+        // 8. 当 Vue 应用失效时，且 dom 完全销毁后，自动执行的函数
+        unmounted() {
+            console.log(document.getElementById("root").innerHTML, "unmounted")
+        },
+
+        template: `<div>{{message}}</div>`
+
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

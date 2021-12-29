@@ -1,0 +1,41 @@
+  <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模板 Dom Ref 的用法</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    // 如何在 Composition API 中通过 Dom ref 获取 Dom 元素
+    // 1. 需要在模板中定义 ref: <div ref="hello">Hello</div>
+    // 2. 需要在 setup 函数中创建一个空的响应式变量，名字与 Dom ref 一致： const {ref} = Vue; let hello = ref(null)
+    // 3. 需要在 setup 函数中返回 创建的 空响应式变量，变量名字要与 Dom ref 一致
+    app = Vue.createApp({
+
+        setup(props, context){
+            const {ref, onMounted} = Vue
+            let hello = ref(null)
+            onMounted(() => {
+                console.log(hello.value)
+                // 修改 获取到 Dom
+                hello.value.innerHTML = `<h1> OK </h1>`
+            })
+            return {
+                hello
+            }
+        },
+        template: `
+          <div ref="hello">Hello</div>
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

@@ -1,0 +1,52 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>watch: 使用一个侦听器，侦听多个数据的变化</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+
+        // 3. 同时侦听多个 reactive 参数
+        setup(props, context){
+            const {reactive, watch, toRefs} = Vue;
+            const nameObj = reactive({name: "张三", age: 18});
+            watch([() => nameObj.name, () => nameObj.age], ([curName, curAge], [prevName, prevAge]) => {
+                console.log(curName, prevName, "--------" , curAge, prevAge)
+            })
+
+            const {name, age} = toRefs(nameObj)
+            return {
+                name,
+                age
+            }
+        },
+        template: `
+            <div>
+              <input v-model="name"/>
+            </div>
+            <div>
+              <h1>{{name}}</h1>
+            </div>
+
+            <div>
+            <input v-model="age"/>
+            </div>
+            <div>
+            <h1>{{age}}</h1>
+            </div>
+
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

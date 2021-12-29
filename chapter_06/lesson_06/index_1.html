@@ -1,0 +1,67 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>生命周期函数的新写法</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+<script>
+    app = Vue.createApp({
+    //   - beforeMount    ==  onBeforeMount
+    //   - mounted        ==  onMounted
+    //   - beforeUpdate   ==  onBeforeUpdate
+    //   - updated        ==  onUpdated
+    //   - beforeUnmount  ==  onBeforeUnmount
+    //   - Unmounted      ==  onUnmounted
+    //   - onRenderTracked 每次渲染后，重新搜集响应式依赖时执行
+    //   - onRenderTriggered 每次触发页面重新渲染时自动执行
+
+        setup(props, context){
+            const {ref, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onRenderTracked, onRenderTriggered} = Vue;
+            const count = ref(0)
+            const handleClick = () => {
+                count.value = "好了"
+            };
+            onBeforeMount(() => {
+                console.log("onBeforeMount")
+            })
+            onMounted(() => {
+                console.log("onMounted")
+            });
+
+            onBeforeUpdate(() => {
+                console.log("onBeforeUpdate")
+            });
+
+            onUpdated(() => {
+                console.log("onUpdated")
+            });
+
+            onRenderTracked(() => {
+                console.log("onRenderTracked")
+            });
+
+            onRenderTriggered(() => {
+                console.log("onRenderTriggered")
+            });
+
+            return {
+                count,
+                handleClick
+            }
+        },
+        template: `
+            <div @click="handleClick">{{count}}</div>
+        `
+    });
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 列表循环渲染 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    app = Vue.createApp({
+        data() {
+            return {
+                arrayList: ["aaa", "ddd", "bbb", "ccc"],
+                objectObj: {
+                    firstName: "Guo",
+                    secondName: "Wei",
+                    job: "playGame"
+                }
+            }
+        },
+        methods: {
+            clickHandle() {
+                // 1. 使用数组的变更函数：push pop shift unshift reverse sort
+                // this.arrayList.push("Hello")
+                // this.arrayList.pop()
+                // this.arrayList.reverse()
+                // this.arrayList.sort()
+                // this.arrayList.shift()
+                // this.arrayList.unshift("World")
+
+                // 2. 直接替换数组
+                // this.arrayList = ["bey", "world"]
+                // this.arrayList = ["bey", "world"].filter(item => item !== "bey")
+
+                // 3. 直接更新数组内容
+                // this.arrayList[1] = "update"
+
+                // 4. 直接添加对象的内容，也可以自动的展示出来
+                this.objectObj.age = 100
+            }
+        },
+        template: `
+          <div> ------示例：v-for="(item, index) in arrayList"------</div>
+              <div v-for="(item, index) in arrayList" :key="index">
+              <div>{{item}}----{{index}}</div>
+          </div>
+          <button @click="clickHandle"> 增加</button>
+
+          <div> ------示例：v-for="(val, key, index) in objectObj"------</div>
+          <div v-for="(val, key, index) in objectObj">
+            <div>{{val}} -- {{key}} -- {{index}}</div>
+          </div>
+
+          <div> ------示例：v-for="item in 10"------</div>
+          <div v-for="item in 10">{{item}}</div>
+
+          <div> ------示例：v-for 和 v-if 结合使用时，外层使用 template占位标签，可去除外出多余的 div 标签------</div>
+          <template v-for="(val, key, index) in objectObj">
+            <div v-if="key != 'secondName'">{{val}} -- {{key}} -- {{index}}</div>
+          </template>
+        `
+    })
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

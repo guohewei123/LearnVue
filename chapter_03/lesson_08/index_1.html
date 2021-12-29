@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动态组件</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    // 1. 动态组件：通过 component 标签的 :is="" 属性动态切换组件 (可以替代 v-show 的实现方式)
+    // 2. 使用 keep-alive 可以缓存组件切换数据
+    Test = {
+        template: `<input />`
+    }
+
+    Test1 = {
+        template: `<div>Hello World</div>`
+    }
+    app = Vue.createApp({
+        components: {test: Test, test1: Test1},
+        data() {
+            return {
+                "componentName": "test"
+            }
+        },
+        methods: {
+            buttonClickHandle () {
+                this.componentName = this.componentName === "test"? "test1":"test"
+            }
+        },
+        template: `
+    <!--    1. 使用 v-show 实现
+            <test v-show="componentName === 'test'"/>
+            <test1 v-show="componentName === 'test1'"/>-->
+    <!--    2. 使用 动态组件实现-->
+            <keep-alive>
+                <component :is="componentName" />
+            </keep-alive>
+            <button @click="buttonClickHandle">切换</button>
+
+        `
+    });
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+
+    vm.$data.message = "Hello"
+</script>
+</html>

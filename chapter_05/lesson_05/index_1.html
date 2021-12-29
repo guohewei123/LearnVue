@@ -1,0 +1,62 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> plugin 插件 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+<div id="hello"></div>
+
+</body>
+<script>
+    // plugin 插件，把通用型的功能封装起来
+    // plugin 插件插件调用，app.use(myPlugin, {name: "张三"}), 可以增加自定义的传参，传递到 "options" 形参变量中
+    // 为 app 增加全局属性 app.config.globalProperties.$sayHello = "hello world"
+    const myPlugin = {
+        install(app, options){
+            console.log(app, options);
+            app.provide("test_key", "test_value");  // provide / inject 传递数据到组件中
+            app.directive("focus", {
+                mounted(el){
+                    el.focus()
+                }
+            });
+            app.mixin({
+                mounted(){
+                    console.log("Mixin")
+                }
+            });
+            // 为 app 增加全局属性
+            app.config.globalProperties.$sayHello = "hello world"
+        }
+    }
+
+    app = Vue.createApp({
+        template: `
+            <my-title></my-title>
+        `
+    })
+
+    app.component("my-title", {
+        inject: ["test_key"],
+        mounted(){
+            console.log(this.$sayHello)
+        },
+        template: `
+            <div>Hello World</div>
+            <div>{{ test_key }}</div>
+            <input v-focus />
+        `
+    })
+
+    app.use(myPlugin, {name: "张三"})  // app 调用插件 myPlugin， 可以传参
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>

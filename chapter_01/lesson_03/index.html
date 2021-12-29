@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Todo List 功能</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+<div id="root1"></div>
+
+</body>
+
+<script>
+    // 字符串 隐藏/显示
+    Vue.createApp({
+        data() {
+            return {
+                inputVal: "",
+                list: [],
+            }
+        },
+        methods: {
+            handleButtonClick() {
+                this.list.push(this.inputVal)
+                this.inputVal = ""
+            }
+        },
+        template: `
+          <div>
+          <input v-model="inputVal"/>
+          <button v-on:click="handleButtonClick"> 增加</button>
+          <ul>
+            <li v-for="(item, index) of list"> {{ index }}--{{ item }}</li>
+          </ul>
+          </div>
+        `
+    }).mount("#root");
+
+</script>
+</html>

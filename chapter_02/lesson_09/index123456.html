@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 事件绑定 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<div id="root"></div>
+
+</body>
+
+<script>
+    app = Vue.createApp({
+        data() {
+            return {
+                counter: 0
+            }
+        },
+        methods: {
+            // 1. 函数可以直接写到模板中
+            // <button @click="counter += 1"> 增加</button>
+
+            // 2. 模板调用函数不传参数时，默认会传递 event
+            /*clickHandle(event) {
+                console.log(event.target)
+                this.counter += 1
+            }*/
+            // <button @click="clickHandle"> 增加</button>
+
+            // 3. 模板调用函数传参数时，如果需要传递 event时，模板中需要传递 "$event" 参数
+            /*clickHandle(num, event) {
+                console.log(event.target)
+                this.counter += num
+            }*/
+            // <button @click="clickHandle(2, $event)"> 增加</button>
+
+            // 4. 同时绑定多个函数到事件, 模板中函数必须加 ()
+            /*clickHandle(num, event) {
+                alert(1)
+            },
+            clickHandle1(num, event) {
+                alert(2)
+            }*/
+            // <button @click="clickHandle(), clickHandle1()"> 增加</button>
+
+            // 5. 事件修饰符
+            // stop(停止事件冒泡)
+            // self(事件只用作用于自己)
+            // prevent(阻止默认行为)
+            // capture(捕获事件)
+            // once(事件只执行一次)
+            // scroll.passive (提升滚动性能)
+
+            // 6. 按键修饰符：enter, tab, delete, esc, up, down, left, right
+            // 7. 鼠标修饰符：left, right, middle
+            // 8. 精确修饰符：exact
+            clickHandle() {
+                alert(1)
+            },
+            clickHandle1() {
+                this.counter += 1
+            }
+        },
+        template: `
+          <div >
+<!--          {{counter}}-->
+<!--          <button @click="counter += 1"> 增加</button>-->
+<!--          <button @click="clickHandle"> 增加</button>-->
+<!--          <button @click="clickHandle(2, $event)"> 增加</button>-->
+<!--          <button @click="clickHandle(), clickHandle1()"> 增加</button>-->
+
+<!--          <div @click.self="clickHandle">-->
+<!--          <div @click.once="clickHandle">-->
+<!--          <div @click.prevent="clickHandle">-->
+          <div @click.capture="clickHandle">
+            {{counter}}
+<!--            <button @click.stop="clickHandle1"> 增加</button>-->
+            <button @click="clickHandle1"> 增加</button>
+          </div>
+          </div>
+
+        `
+    })
+
+    // vm 代表的就是 Vue 应用的根组件
+    const vm = app.mount("#root");
+</script>
+</html>
